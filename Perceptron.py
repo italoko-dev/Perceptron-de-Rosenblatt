@@ -33,18 +33,21 @@ class Perceptron:
     #Treina a rede
     def train(self,input,eta,max_epoch):
         self.weights = np.zeros(len(input[0]),int)
-
         expecteds_output = copy.deepcopy(input[:, len(input[0])-1])
         input[:,len(input[0])-1] = self.bias
 
         for epoch in range(max_epoch):
+            epoch_errors = 0
             for i in range(len(input)):
                 x = input[i]
                 y = self.output(x)
                 error = self.get_erro(expecteds_output[i],y)
                 if(error != 0):
                     self.setup_weights(x,eta,error)
-
+                    epoch_errors += 1
+            if epoch_errors == 0:
+                break
+        print(f'Treinado com:{epoch} epocas')
     #Predição de uma determinada entrada.
     def prediction(self,input):
         input.append(self.bias)
@@ -61,8 +64,9 @@ input_train = np.array(
         [1,0,0],
         [1,1,1]          
     ])
+'''
 #OR
-'''input_train = np.array(
+input_train = np.array(
     [
         [0,0,0],
         [0,1,1],
